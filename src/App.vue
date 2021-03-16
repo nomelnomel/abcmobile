@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="counter===1 && !endPage">
+    <div v-if="counter===1">
       <p class="text1">Лучшие астрологи и экстрасенсы Румынии</p>
       <div class="hr"/>
       <p class="text2">Точность прогноза: 97%</p>
@@ -123,7 +123,7 @@
       <img src="../src/assets/img/loading.svg" alt="">
     </div>
 
-    <div class="runes" v-if="counter===1 && !endPage">
+    <div class="runes" v-if="counter===1">
       <img src="../src/assets/img/rune1.svg" alt="">
       <img src="../src/assets/img/eye-1.svg" alt="" class="eye1">
       <p class="text5">
@@ -247,7 +247,7 @@ export default {
       yearError: false,
       loading: false,
       audioLoading: false,
-      endPage: true
+      endPage: false
     }
   },
   methods: {
