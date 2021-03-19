@@ -1,49 +1,55 @@
 <template>
   <div id="app">
     <div v-if="counter===1">
-      <p class="text1">Лучшие астрологи и экстрасенсы Румынии</p>
-      <div class="hr"/>
-      <p class="text2">Точность прогноза: 97%</p>
-      <div class="face">
-        <img src="../src/assets/img/woman1.png" alt="" class="woman">
-        <img src="../src/assets/img/icon1.svg" alt="" class="bg-icon">
-        <img src="../src/assets/img/blik.png" alt="" class="blik">
-      </div>
-      <p class="text3">
-        Вас беспокоит вопрос о том,<br><span>когда Вы покинете этот Мир и при каких обстоятельствах</span>?
-      </p>
-
-      <div class="btn btn-yes">
-        Да
-      </div>
-      <div class="btn btn-no">
-        Нет
-      </div>
-      <p class="text1">Онлайн предсказание</p>
-
-      <div class="block-hands">
-        <img src="../src/assets/img/hands.png" alt="" class="hands">
-        <p class="text4">
-          Позвольте нам раскрыть эту волнующую тайну и<br><span>с точностью определить дату и время вашей смерти,</span>
-          а
-          также предшествующую этому событию причину
+      <div class="container">
+        <p class="text1">Лучшие астрологи и экстрасенсы Румынии</p>
+        <div class="hr"/>
+        <p class="text2">Точность прогноза: 97%</p>
+        <div class="face">
+          <img src="../src/assets/img/woman1.png" alt="" class="woman">
+          <img src="../src/assets/img/icon1.svg" alt="" class="bg-icon">
+          <img src="../src/assets/img/blik.png" alt="" class="blik mob">
+          <img src="../src/assets/img/light1440.png" alt="" class="blik desc">
+        </div>
+        <p class="text3">
+          Вас беспокоит вопрос о том,<br><span>когда Вы покинете этот Мир и при каких обстоятельствах</span>?
         </p>
+
+        <div class="btn" @click="scrollToBot">
+          Да
+        </div>
+        <div class="btn" @click="scrollToBot">
+          Нет
+        </div>
+        <p class="text1">Онлайн предсказание</p>
       </div>
 
-      <div class="yoga">
-        <p class="text4">
-          Многие не верят предсказаниям и мы решили доказать каждому,<br><span>что прогноз может изменить жизнь любого человека!</span>
-        </p>
+      <div class="container container2">
+        <div class="block-hands">
+          <img src="../src/assets/img/hands.png" alt="" class="hands">
+          <p class="text4">
+            Позвольте нам раскрыть эту волнующую тайну
+            и<br><span>с точностью определить дату и время вашей смерти,</span>
+            а
+            также предшествующую этому событию причину
+          </p>
+        </div>
+
+        <div class="yoga">
+          <p class="text4">
+            Многие не верят предсказаниям и мы решили доказать каждому,<br><span>что прогноз может изменить жизнь любого человека!</span>
+          </p>
+        </div>
       </div>
 
       <div class="question-start">
         <div class="question-title">
           Боитесь ли вы умереть?
         </div>
-        <div class="btn btn-yes" @click="nextQuestion">
+        <div class="btn" @click="nextQuestion">
           Да
         </div>
-        <div class="btn btn-no" @click="nextQuestion">
+        <div class="btn" @click="nextQuestion">
           Нет
         </div>
         <div class="question-counter text1">
@@ -61,16 +67,16 @@
       <div class="question-title">
         Когда Вы чувствуете себя наиболее комфортно?
       </div>
-      <div class="btn btn-yes" @click="nextQuestion">
+      <div class="btn" @click="nextQuestion">
         Утро
       </div>
-      <div class="btn btn-no" @click="nextQuestion">
+      <div class="btn" @click="nextQuestion">
         День
       </div>
-      <div class="btn btn-yes" @click="nextQuestion">
+      <div class="btn" @click="nextQuestion">
         Вечер
       </div>
-      <div class="btn btn-no" @click="nextQuestion">
+      <div class="btn" @click="nextQuestion">
         Ночь
       </div>
       <div class="question-counter text1">
@@ -88,7 +94,8 @@
         Укажите свою дату рождения:
       </div>
       <div class="selects">
-        <div class="btn btn-select" @click="chooseDay = true" :class="{'error': dayError}">
+        <div class="btn btn-select" v-click-outside="hideD" @click="chooseDay = true"
+             :class="{'error': dayError}">
           {{ isDayChoosen ? choosenDay : 'День' }}
         </div>
         <div class="select-items" v-if="chooseDay">
@@ -96,7 +103,8 @@
         </div>
       </div>
       <div class="selects">
-        <div class="btn btn-select" @click="chooseMonth = true" :class="{'error': monthError}">
+        <div class="btn btn-select" v-click-outside="hideM"  @click="chooseMonth = true"
+             :class="{'error': monthError}">
           {{ isMonthChoosen ? choosenMonth : 'Месяц' }}
         </div>
         <div class="select-items" v-if="chooseMonth">
@@ -104,16 +112,17 @@
         </div>
       </div>
       <div class="selects">
-        <div class="btn btn-select" @click="chooseYear = true" :class="{'error': yearError}">
+        <div class="btn btn-select" v-click-outside="hideY" @click="chooseYear = true"
+             :class="{'error': yearError}">
           {{ isYearChoosen ? choosenYear : 'Год' }}
         </div>
         <div class="select-items" v-if="chooseYear">
           <div class="select-item" v-for="(year,i) in years" :key="i" @click="selectYear(year)">{{ year }}</div>
         </div>
       </div>
-      <button class="btn" @click="goNext">
+      <div class="btn" @click="goNext">
         Далее
-      </button>
+      </div>
       <div class="question-counter text1">
         Вопрос {{ counter }} - 5
       </div>
@@ -124,14 +133,14 @@
     </div>
 
     <div class="runes" v-if="counter===1">
-      <img src="../src/assets/img/rune1.svg" alt="">
+      <img src="../src/assets/img/rune1.svg" alt="" class="rune">
       <img src="../src/assets/img/eye-1.svg" alt="" class="eye1">
       <p class="text5">
         Вы, конечно, умрете.<br>
         И все, с кем вы знакомы,<br>
         тоже однажды умрут.
       </p>
-      <img src="../src/assets/img/rune2.svg" alt="">
+      <img src="../src/assets/img/rune2.svg" alt="" class="rune">
       <img src="../src/assets/img/eye.svg" alt="" class="eye2">
     </div>
 
@@ -145,15 +154,15 @@
         Снятся ли Вам умершие люди?
       </div>
 
-      <button class="btn" @click="nextQuestion">
+      <div class="btn" @click="nextQuestion">
         Да
-      </button>
-      <button class="btn" @click="nextQuestion">
+      </div>
+      <div class="btn" @click="nextQuestion">
         Нет
-      </button>
-      <button class="btn" @click="nextQuestion">
+      </div>
+      <div class="btn" @click="nextQuestion">
         Иногда
-      </button>
+      </div>
       <div class="question-counter text1">
         Вопрос {{ counter }} - 5
       </div>
@@ -170,12 +179,12 @@
         Вас?
       </div>
 
-      <button class="btn" @click="goAudio">
+      <div class="btn" @click="goAudio">
         Да
-      </button>
-      <button class="btn" @click="goAudio">
+      </div>
+      <div class="btn" @click="goAudio">
         Затрудняюсь ответить
-      </button>
+      </div>
       <div class="question-counter text1">
         Вопрос {{ counter }} - 5
       </div>
@@ -215,7 +224,7 @@
     </div>
 
 
-    <div class="footer" v-if="counter===1">
+    <div class="footer lastPage" v-if="counter===1 || endPage">
       TERMENI SI CONDITII: ACESTA ESTE UN SERVICIU DE DIVERTISMENT. PRIN FOLOSIREA LUI DECLARATI CA AVETI 18 ANI
       IMPLINITI,
     </div>
@@ -224,6 +233,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
 
 export default {
   name: 'App',
@@ -247,10 +257,19 @@ export default {
       yearError: false,
       loading: false,
       audioLoading: false,
-      endPage: false
+      endPage: false,
     }
   },
   methods: {
+    hideD(){
+      this.chooseDay = false
+    },
+    hideM(){
+      this.chooseMonth = false
+    },
+    hideY(){
+      this.chooseYear = false
+    },
     nextQuestion() {
       this.counter++
     },
@@ -294,9 +313,24 @@ export default {
         this.endPage = true
         this.audioLoading = false
       }, 5000)
-    }
+    },
+    scrollToBot() {
+      window.scroll({
+        top: 5000,
+        left: 0,
+        behavior: 'smooth',
+      })
+    },
+    // scrollListener() {
+    //   if( window.scrollY > 150){
+    //     window.scroll({
+    //       top: 568,
+    //       left: 0,
+    //       behavior: 'smooth',
+    //     })
+    //   }
+    // },
   },
-  components: {},
   computed: {
     days() {
       const arr = []
@@ -317,6 +351,15 @@ export default {
       return 'По вам скучает очень близкий человек, которого больше нет в мире живых. Возможно это кто-то из Ваших родителей.'
     }
   },
+  created() {
+    if (process.browser) {
+      window.addEventListener('scroll', this.scrollListener)
+    }
+  },
+  directives: {
+    ClickOutside
+  }
+
 }
 </script>
 
@@ -440,6 +483,31 @@ body {
   font-size: 14px;
   line-height: 16px;
   color: #ffffff;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: linear-gradient(248.67deg, rgba(255, 255, 255, 0) 30.84%, rgba(255, 255, 255, 0.29) 46.06%, rgba(255, 255, 255, 0) 64.04%);
+  animation: pereliv 2s linear infinite;
+  left: 0;
+
+}
+
+@keyframes pereliv {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .btn.error {
@@ -655,7 +723,7 @@ body {
   position: relative;
 }
 
-.btn-select:after {
+.btn-select:before {
   content: '';
   position: absolute;
   width: 0;
@@ -793,13 +861,228 @@ body {
   font-weight: 700;
 }
 
-.end{
+.end {
   margin-bottom: 10px;
 }
 
-.btn-call{
+.btn-call {
   width: 240px;
   background: linear-gradient(90deg, rgba(76, 217, 100, 0.9) -6.2%, rgba(50, 185, 73, 0.9) 100%);
   margin-top: 20px;
+}
+
+.desc {
+  display: none;
+}
+
+@media screen and (min-width: 1440px) {
+
+  .text1 {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .text2 {
+    font-size: 25px;
+    line-height: 29px;
+  }
+
+  .face {
+    margin-top: 110px;
+    margin-bottom: 70px;
+  }
+
+  .woman {
+    width: 237px;
+  }
+
+  .bg-icon {
+    width: 389px;
+  }
+
+  .desc {
+    display: block;
+  }
+
+  .blik {
+    width: 100%;
+    margin-top: 154px;
+  }
+
+  .mob {
+    display: none;
+  }
+
+  .btn {
+    width: 310px;
+    height: 70px;
+    font-size: 20px;
+    line-height: 23px;
+  }
+
+  .text3 {
+    max-width: 505px;
+    margin: 30px auto 50px;
+    font-size: 25px;
+    line-height: 25px;
+  }
+
+  .text3 span {
+    line-height: 35px;
+  }
+
+  .block-hands {
+    max-width: 442px;
+    margin: 170px auto 70px;
+  }
+
+  .text4 {
+    font-size: 25px;
+    line-height: 35px;
+    margin-top: 58px;
+    margin-bottom: 63px;
+    padding: 0 19px 0 25px;
+  }
+
+  .text4 span {
+    font-size: 25px;
+    line-height: 35px;
+  }
+
+  .hands {
+    width: 135px;
+  }
+
+  .yoga {
+    height: 606px;
+  }
+
+  .yoga .text4 {
+    max-width: 391px;
+    margin: 140px auto 0;
+  }
+
+  .question-title {
+    font-size: 25px;
+    line-height: 29px;
+    margin-bottom: 45px;
+    margin-top: 70px;
+  }
+
+  .text5 {
+    font-size: 25px;
+    line-height: 35px;
+    margin: 80px auto 70px;
+  }
+
+  .runes {
+    margin: 100px 0;
+  }
+
+  .rune {
+    width: 56px;
+  }
+
+  .eye1, .eye2 {
+    transform: scale(2);
+  }
+
+  .eye1 {
+    right: -30px;
+  }
+
+  .question-counter {
+    margin-top: 30px;
+  }
+
+  .footer {
+    display: none;
+  }
+
+  .question {
+    height: 100vh;
+  }
+
+  .question-header {
+    font-size: 25px;
+    line-height: 35px;
+    height: 224px;
+  }
+
+  .question-header span {
+    width: 412px;
+  }
+
+  .btn + .btn {
+    margin-top: 35px;
+  }
+
+  .question .eye1 {
+    top: 140px;
+    right: 28%;
+  }
+
+  .question .eye2 {
+    left: 29%;
+    bottom: 160px;
+  }
+
+  .question .question-counter {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .question .question-title {
+    max-width: 50%;
+    margin: 0 auto 40px;
+    line-height: 35px;
+  }
+
+  .btn-select:before {
+    top: 33px;
+    right: 20px;
+  }
+
+  .select-items {
+    width: 310px;
+    height: 400px;
+    overflow-x: hidden;
+  }
+
+  .question-header.fifth > span {
+    width: 441px;
+    height: auto;
+  }
+
+  .question-header.fifth.end > span {
+    font-size: 25px;
+    line-height: 35px;
+  }
+
+  .text7 {
+    font-size: 25px;
+    line-height: 35px;
+    width: 469px;
+  }
+
+  .lastPage .block-hands {
+    font-size: 25px;
+    line-height: 35px;
+    padding: 64px 30px 50px;
+  }
+
+  .btn-call {
+    width: 395px;
+  }
+
+  .footer.lastPage {
+    display: block !important;
+    font-size: 12px;
+    line-height: 18px;
+    width: 50%;
+    margin: -51px auto 0;
+  }
 }
 </style>
