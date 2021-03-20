@@ -94,29 +94,29 @@
         Укажите свою дату рождения:
       </div>
       <div class="selects">
-        <div class="btn btn-select" v-click-outside="hideD" @click="chooseDay = true"
+        <div class="btn btn-select" @click="chooseDay = true"
              :class="{'error': dayError}">
           {{ isDayChoosen ? choosenDay : 'День' }}
         </div>
-        <div class="select-items" v-if="chooseDay">
+        <div class="select-items" v-if="chooseDay" v-click-outside="hideD">
           <div class="select-item" v-for="(day,i) in days" :key="i" @click="selectDay(day)">{{ day }}</div>
         </div>
       </div>
       <div class="selects">
-        <div class="btn btn-select" v-click-outside="hideM"  @click="chooseMonth = true"
+        <div class="btn btn-select"   @click="chooseMonth = true"
              :class="{'error': monthError}">
           {{ isMonthChoosen ? choosenMonth : 'Месяц' }}
         </div>
-        <div class="select-items" v-if="chooseMonth">
+        <div class="select-items" v-if="chooseMonth" v-click-outside="hideM">
           <div class="select-item" v-for="(month,i) in months" :key="i" @click="selectMonth(month)">{{ month }}</div>
         </div>
       </div>
       <div class="selects">
-        <div class="btn btn-select" v-click-outside="hideY" @click="chooseYear = true"
+        <div class="btn btn-select"  @click="chooseYear = true"
              :class="{'error': yearError}">
           {{ isYearChoosen ? choosenYear : 'Год' }}
         </div>
-        <div class="select-items" v-if="chooseYear">
+        <div class="select-items" v-if="chooseYear" v-click-outside="hideY">
           <div class="select-item" v-for="(year,i) in years" :key="i" @click="selectYear(year)">{{ year }}</div>
         </div>
       </div>
