@@ -249,7 +249,7 @@ export default {
       yearError: false,
       loading: false,
       audioLoading: false,
-      endPage: true,
+      endPage: false,
       jsonText: null,
     }
   },
