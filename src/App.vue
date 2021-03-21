@@ -733,9 +733,14 @@ body {
   border-radius: 25px;
 }
 
+.select-items::-webkit-scrollbar{
+  width: 0!important;
+}
+
 .select-item {
   padding: 10px;
   border-bottom: 1px solid #202024;
+  cursor: pointer;
 }
 
 .perc::after {
@@ -1048,6 +1053,11 @@ body {
     width: 310px;
     height: 400px;
     overflow-x: hidden;
+  }
+
+  .select-item{
+    padding: 20px 0;
+    font-size: 20px;
   }
 
   .question-header.fifth > span {
