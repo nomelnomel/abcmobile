@@ -93,32 +93,30 @@
       <div class="question-title">
         Укажите свою дату рождения:
       </div>
-      <div class="selects">
-        <div class="btn btn-select" @click="chooseDay = true"
-             :class="{'error': dayError}">
-          {{ isDayChoosen ? choosenDay : 'День' }}
-        </div>
-        <div class="select-items" v-if="chooseDay" v-click-outside="hideD">
-          <div class="select-item" v-for="(day,i) in days" :key="i" @click="selectDay(day)">{{ day }}</div>
-        </div>
-      </div>
-      <div class="selects">
-        <div class="btn btn-select"   @click="chooseMonth = true"
-             :class="{'error': monthError}">
-          {{ isMonthChoosen ? choosenMonth : 'Месяц' }}
-        </div>
-        <div class="select-items" v-if="chooseMonth" v-click-outside="hideM">
-          <div class="select-item" v-for="(month,i) in months" :key="i" @click="selectMonth(month)">{{ month }}</div>
-        </div>
-      </div>
-      <div class="selects">
-        <div class="btn btn-select"  @click="chooseYear = true"
-             :class="{'error': yearError}">
-          {{ isYearChoosen ? choosenYear : 'Год' }}
-        </div>
-        <div class="select-items" v-if="chooseYear" v-click-outside="hideY">
-          <div class="select-item" v-for="(year,i) in years" :key="i" @click="selectYear(year)">{{ year }}</div>
-        </div>
+      <div class="input-age">
+        <Select
+            :word="'День'"
+            :arr="days"
+            :error="dayError"
+            @selectIsChoosen="isDayChoosen = true"
+            @noError="dayError = false"
+        />
+        <Select
+            :word="'Месяц'"
+            :arr="months"
+            :error="monthError"
+            @selectIsChoosen="isMonthChoosen = true"
+            @noError="monthError = false"
+        />
+        <Select
+            :word="'Год'"
+            :arr="years"
+            :error="yearError"
+            :getAge="true"
+            @selectIsChoosen="isYearChoosen = true"
+            @noError="yearError = false"
+            @gotAge="age = $event"
+        />
       </div>
       <div class="btn" @click="goNext">
         Далее
@@ -210,7 +208,7 @@
       </div>
 
       <div class="block-hands">
-        <span>Первое значимое событие может произойти уже 14.02.2021,</span> Вам надо быть готовым, что бы последствия
+        <span>Первое значимое событие может произойти уже {{new Date(+new Date() + 86400000).toLocaleDateString()}},</span> Вам надо быть готовым, что бы последствия
         не оказались необратимыми.
       </div>
 
@@ -222,8 +220,8 @@
         Позвонить и прослушать
       </div>
     </div>
-      <div class="json" v-if="counter===10">
-        <div v-for="(line,i) in Object.entries(jsonText)" :key="i"><span>{{line[0]}}</span> : {{line[1]}}</div>
+      <div class="json" v-if="jsonText">
+        <div v-for="(line,i) in Object.entries(jsonText)" :key="i"><span>{{line[0]}}: </span> {{line[1]}}</div>
       </div>
 
     <div class="footer lastPage" v-if="counter===1 || endPage">
@@ -235,25 +233,17 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside'
-
+import Select from '@/components/Select'
 export default {
   name: 'App',
   data() {
     return {
       counter: 1,
-      chooseMonth: false,
-      choosenMonth: '',
       isMonthChoosen: false,
       months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-      chooseDay: false,
-      choosenDay: '',
       isDayChoosen: false,
-      chooseYear: false,
-      choosenYear: '',
       isYearChoosen: false,
       age: null,
-      disabledButton: false,
       dayError: false,
       monthError: false,
       yearError: false,
@@ -275,28 +265,6 @@ export default {
     },
     nextQuestion() {
       this.counter++
-    },
-    selectMonth(month) {
-      this.choosenMonth = month
-      this.chooseMonth = false
-      this.isMonthChoosen = true
-      this.monthError = false
-    },
-    selectDay(day) {
-      this.choosenDay = day
-      this.chooseDay = false
-      this.isDayChoosen = true
-      this.dayError = false
-    },
-    selectYear(year) {
-      this.choosenYear = year
-      this.chooseYear = false
-      this.isYearChoosen = true
-      this.yearError = false
-      this.age = new Date().getFullYear() - year
-    },
-    notChoosen() {
-      this.disabledButton = true
     },
     goNext() {
       if (this.isValid) {
@@ -328,7 +296,6 @@ export default {
       try {
         const response = await fetch('https://swapi.dev/api/people/1/')
         this.jsonText = await response.json().then(res => res)
-        this.counter = 10
         this.endPage = false
       }
       catch (e){
@@ -356,14 +323,15 @@ export default {
       return 'По вам скучает очень близкий человек, которого больше нет в мире живых. Возможно это кто-то из Ваших родителей.'
     }
   },
+  components:{
+    Select
+  },
   created() {
     if (process.browser) {
       window.addEventListener('scroll', this.scrollListener)
     }
   },
-  directives: {
-    ClickOutside
-  }
+
 
 }
 </script>
@@ -740,9 +708,15 @@ body {
   top: 18px;
 }
 
+.input-age{
+  display: flex;
+  flex-direction: column;
+}
+
 .selects {
   position: relative;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
+  display: inline-block;
 }
 
 
@@ -887,7 +861,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   padding: 30px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .json div{
@@ -1108,6 +1082,10 @@ body {
     line-height: 18px;
     width: 50%;
     margin: -51px auto 0;
+  }
+
+  .json{
+    font-size: 20px;
   }
 }
 </style>
