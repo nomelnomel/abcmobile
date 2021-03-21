@@ -218,11 +218,13 @@
         Нажмите на кнопку ниже прямо сейчас и наберите наш номер телефона. Прослушайте важную информацию!
       </div>
 
-      <div class="btn btn-call">
+      <div class="btn btn-call" @click="getJson">
         Позвонить и прослушать
       </div>
     </div>
-
+      <div class="json" v-if="counter===10">
+        <div v-for="(line,i) in Object.entries(jsonText)" :key="i"><span>{{line[0]}}</span> : {{line[1]}}</div>
+      </div>
 
     <div class="footer lastPage" v-if="counter===1 || endPage">
       TERMENI SI CONDITII: ACESTA ESTE UN SERVICIU DE DIVERTISMENT. PRIN FOLOSIREA LUI DECLARATI CA AVETI 18 ANI
@@ -257,7 +259,8 @@ export default {
       yearError: false,
       loading: false,
       audioLoading: false,
-      endPage: false,
+      endPage: true,
+      jsonText: null,
     }
   },
   methods: {
@@ -321,15 +324,17 @@ export default {
         behavior: 'smooth',
       })
     },
-    // scrollListener() {
-    //   if( window.scrollY > 150){
-    //     window.scroll({
-    //       top: 568,
-    //       left: 0,
-    //       behavior: 'smooth',
-    //     })
-    //   }
-    // },
+    async getJson(){
+      try {
+        const response = await fetch('https://swapi.dev/api/people/1/')
+        this.jsonText = await response.json().then(res => res)
+        this.counter = 10
+        this.endPage = false
+      }
+      catch (e){
+        console.log(e)
+      }
+    }
   },
   computed: {
     days() {
@@ -873,6 +878,26 @@ body {
 
 .desc {
   display: none;
+}
+
+.json{
+  margin: 0 auto;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 30px;
+  font-size: 20px;
+}
+
+.json div{
+  border-bottom: 1px dashed silver;
+  margin-bottom: 10px;
+}
+
+.json span{
+  font-weight: bold;
+  color: silver;
 }
 
 @media screen and (min-width: 1440px) {
